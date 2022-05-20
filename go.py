@@ -15,7 +15,7 @@ class Go(object):
     def __init__(self, cursor=[18,0], starter=1, board_size=19, board_bg=44, show_debug=False):
         self.starting_color, self.board_size, self.board_bg, self.show_debug = starter, board_size, board_bg, show_debug
         self.moves, self.current_move, self.current_turn = [[]], [], starter
-        self.white_score, self.black_score, self.white_moves, self.black_moves = 0, 0, 0, 0
+        self.white_score, self.black_score, self.white_moves, self.black_moves, self.white_captures, self.black_captures = 0, 0, 0, 0, 0, 0
         self.state_count, self.cursor_item = 0, cursor
         self.current_cursor, self.previous_cursor = [], []
         # self.previous, self.color = [], color
@@ -84,15 +84,10 @@ class Go(object):
         #     # print(" self.blue_captures:    {}".format(self.colors[2].format(','.join([self.colors[2].format(x) for x in self.blue_captures]))))
         #     # print(" self.red_captures:     {}".format(self.colors[1].format(','.join([self.colors[2].format(x) for x in self.red_captures]))))
 
-        # red captures top
-        # print("\n    {} {} {} {} {} {}".format(
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 6]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 3]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 2]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 1]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 4]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.red_captures if x == 5]) 
-        # ))
+        # black captures
+        print("    {}{}".format(self.colors[0].format("●"), self.colors[-1].format(" %s" % (self.black_captures))), end="")
+        # white captures
+        print(" {}{}".format(self.colors[1].format("●"), self.colors[-1].format(" %s" % (self.white_captures))))
 
         for row_index, row in enumerate(self.board):
             if -(self.cursor_item[0]-self.board_size) == row_num:
@@ -126,24 +121,10 @@ class Go(object):
 
             print()
         
-        # letters
-        for i in range(0,self.board_size):
-            if self.cursor_item[1] == i:
-                letters += "\033[95m {}\033[0m".format(string.ascii_lowercase[i]) # pink letter
-            else:
-                letters += "\033[90m {}\033[0m".format(string.ascii_lowercase[i]) # grey letter
-
+        # bottom letters
+        letters = ''.join(["\033[{}m {}\033[0m".format((95 if self.cursor_item[1] == i else 90), string.ascii_uppercase.replace("I", "")[i]) for i in range(0,self.board_size)])
         print("   {}{}\n".format("" if (self.board_size >= 13) else "", letters), end="")
 
-        # blue captures bottom
-        # print("\n    {} {} {} {} {} {}".format(
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 12]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 9]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 8]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 7]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 10]),
-        #     ''.join([self.pieces[x].replace(' ', '') for x in self.blue_captures if x == 11]) 
-        # ))
 
         print("\n ⭠ ⭡⭣ ⭢  to move.\n SPACE to select.\n ESC to exit.\n")
 
