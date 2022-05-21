@@ -51,4 +51,4 @@ optional arguments:
                         load
 ```
 
-<img width="554" src="screenshots/go.png">
+<img width="462" src="screenshots/go.png">
